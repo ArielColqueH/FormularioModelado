@@ -48,3 +48,13 @@ def sumatoria_naturales_cambio_variable(arr):
     for i in arr:
         sum += 1/i
     return sum
+def sumatoria_log(arr):
+    sum = 0
+    for i in arr:
+        sum += math.log(i,10)
+    return sum
+def sumatoria_log_sqrt(arr):
+    sum = 0
+    for i in arr:
+        sum += (math.log(i,10)**2)
+    return sum

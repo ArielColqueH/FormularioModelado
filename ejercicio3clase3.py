@@ -27,7 +27,7 @@ def sumatoria_naturales_cambio_variable(arr):
 
 def alpha_2(arrx1,arrx2,arry1):
     dividendo=sumatoria_naturales(arrx2)*sumatoria_naturales_cambio_variable(arry1)*((sumatoria_naturales(arrx1))**2)-sumatoria_naturales_cambio_variable(arry1)*sumatoria_naturales(arrx2)*sumatoria_sqrt(arrx1)
-    divisor=(sumatoria_naturales(arrx1)*sumatoria_sqrt(arrx2))**2-(sumatoria_sqrt(arrx2))*sumatoria_naturales(arrx1)
+    divisor=(sumatoria_naturales(arrx1)*sumatoria_naturales(arrx2))**2-(sumatoria_sqrt(arrx2))*sumatoria_naturales(arrx1)
     res=dividendo/divisor;
     return res
 
