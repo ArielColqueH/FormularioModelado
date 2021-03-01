@@ -109,3 +109,12 @@ def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
 #      [2, 3],
 #      [1, 3]]
 # multiplicacion_dos_matrices_n_m(A, B)
+
+def traspuesta_matriz(matriz):
+    t= []
+    for i in range(len(matriz[0])):
+        t.append([])
+        for j in range(len(matriz)):
+            t[i].append(matriz[j][i])
+
+    return t
