@@ -57,6 +57,13 @@ def sumatoria_naturales_cambio_variable(arr):
         sum += 1 / i
     return sum
 
+def sumatoria_log_e(arr):
+    n = len(arr)*math.log(math.e)
+    return n
+
+def sumatoria_log_e_n(arr,expo):
+    n = len(arr)*math.log((math.e)**expo)
+    return n
 
 def sumatoria_log(arr):
     sum = 0
