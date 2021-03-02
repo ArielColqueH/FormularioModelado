@@ -57,6 +57,13 @@ def sumatoria_naturales_cambio_variable(arr):
         sum += 1 / i
     return sum
 
+def sumatoria_log_e(arr):
+    n = len(arr)*math.log(math.e)
+    return n
+
+def sumatoria_log_e_n(arr,expo):
+    n = len(arr)*math.log((math.e)**expo)
+    return n
 
 def sumatoria_log(arr):
     sum = 0
@@ -240,3 +247,12 @@ printM(invM)
 #      [2, 3],
 #      [1, 3]]
 # multiplicacion_dos_matrices_n_m(A, B)
+
+def traspuesta_matriz(matriz):
+    t= []
+    for i in range(len(matriz[0])):
+        t.append([])
+        for j in range(len(matriz)):
+            t[i].append(matriz[j][i])
+
+    return t
