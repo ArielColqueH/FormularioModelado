@@ -21,30 +21,42 @@ def sumatoria_naturales(arr):
 def sumatoria_naturales_cambio_variable(arr):
     sum = 0
     for i in arr:
-        sum += math.e**1/i
+        sum += math.e**(1/i)
     return sum
 
+def sumatoria_naturales_cambio_variable_arrx(arrx,arry):
+    sum = 0
+    for i in range(len(arrx)):
+        sum += (math.e**(1/arry[i]))*(arrx[i])
+    return sum
+
+def sumatoria_naturales_arrx1_arrx2(arrx1,arrx2):
+    sum = 0
+    for i in range(len(arrx1)):
+        sum += (arrx1[i]+arrx2[i])
+    return sum
 
 def alpha_2(arrx1,arrx2,arry1):
-    dividendo=sumatoria_naturales(arrx2)*sumatoria_naturales_cambio_variable(arry1)*((sumatoria_naturales(arrx1))**2)-sumatoria_naturales_cambio_variable(arry1)*sumatoria_naturales(arrx2)*sumatoria_sqrt(arrx1)
-    divisor=(sumatoria_naturales(arrx1)*sumatoria_naturales(arrx2))**2-(sumatoria_sqrt(arrx2))*sumatoria_naturales(arrx1)
-    res=dividendo/divisor;
+    dividendo=sumatoria_naturales_cambio_variable_arrx(arrx2,arry1)*(sumatoria_sqrt(arrx1)-((sumatoria_naturales(arrx1))**2))
+    divisor=(sumatoria_naturales_arrx1_arrx2(arrx1,arrx2))**2-((sumatoria_sqrt(arrx2))*(sumatoria_sqrt(arrx1)))
+    res=dividendo/divisor
     return res
 
 def alpha_1(arrx1,arrx2,arry1):
-    dividendo=sumatoria_naturales_cambio_variable(arry1)*sumatoria_naturales(arrx1)-alpha_2(arrx1,arrx2,arry1)*sumatoria_naturales(arrx1)*sumatoria_naturales(arrx2)
+    dividendo=sumatoria_naturales_cambio_variable_arrx(arrx1,arry1)-alpha_2(arrx1,arrx2,arry1)*(sumatoria_naturales_arrx1_arrx2(arrx1,arrx2))
     divisor=sumatoria_sqrt(arrx1)
     res=dividendo/divisor;
     return res
-
 
 #-----regresion lineal-----
 
 def y_estimado(arrx1,arrx2,arry1):
     arrEstimado=[]
+
     for i in range(len(arrx1)):
         element = (1 / (math.log(alpha_1(arrx1,arrx2,arry1)*arrx1[i]+arrx2[i]*alpha_2(arrx1,arrx2,arry1))))
         arrEstimado.append(element)
+
     return arrEstimado
 
 
@@ -69,13 +81,6 @@ def r2_primerafuncion(arrx1,arrx2,arry):
     return res
 
 
-def r2_segundafuncion (arrx1,arrx2,arry):
-    arry_estimado = y_estimado(arrx1, arrx2, arry)
-    dividendo = sumatoria_y_menos_yestimado(arry,arry_estimado)
-    divisor = sumatoria_y_menos_ypromedio(arry)
-    res = 1-(dividendo / divisor);
-    return res
-
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
@@ -95,6 +100,6 @@ for row in csv_reader:
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejercicio de clase 3 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+" | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,edadArray,promedioNotaArray))  +" | R^2 2 = "+str(r2_segundafuncion(horasEstudioArray,edadArray,promedioNotaArray)))
+print("\t Ejercicio de clase 3 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+" | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,edadArray,promedioNotaArray)))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()

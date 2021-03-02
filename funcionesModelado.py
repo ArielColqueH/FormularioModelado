@@ -109,12 +109,6 @@ def r2_primerafuncion(arrx1,arrx2,arry):
     return res
 
 
-def r2_segundafuncion (arrx1,arrx2,arry):
-    arry_estimado = y_estimado(arrx1, arrx2, arry)
-    dividendo = sumatoria_y_menos_yestimado(arry,arry_estimado)
-    divisor = sumatoria_y_menos_ypromedio(arry)
-    res = 1-(dividendo / divisor);
-    return res
 
 
 # -----matrices----
