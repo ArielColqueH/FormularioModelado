@@ -37,6 +37,45 @@ def alpha_1(arrx1,arrx2,arry1):
     res=dividendo/divisor;
     return res
 
+
+#-----regresion lineal-----
+
+def y_estimado(arrx1,arrx2,arry1):
+    arrEstimado=[]
+    for i in range(len(arrx1)):
+        element = (1 / (math.log(alpha_1(arrx1,arrx2,arry1)*arrx1[i]+arrx2[i]*alpha_2(arrx1,arrx2,arry1))))
+        arrEstimado.append(element)
+    return arrEstimado
+
+
+def sumatoria_y_menos_ypromedio(arry):
+    sum = 0
+    for i in arry:
+        sum += (i-promedio(arry))**2
+    return sum
+
+def sumatoria_y_menos_yestimado(arry,arryestimado):
+    sum = 0
+    for i in range(len(arry)):
+        sum += ((arry[i]-arryestimado[i])**2)
+    return sum
+
+
+def r2_primerafuncion(arrx1,arrx2,arry):
+    arry_estimado=y_estimado(arrx1,arrx2,arry)
+    dividendo=sumatoria_y_menos_ypromedio(arry_estimado)
+    divisor=sumatoria_y_menos_ypromedio(arry)
+    res=dividendo/divisor;
+    return res
+
+
+def r2_segundafuncion (arrx1,arrx2,arry):
+    arry_estimado = y_estimado(arrx1, arrx2, arry)
+    dividendo = sumatoria_y_menos_yestimado(arry,arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = 1-(dividendo / divisor);
+    return res
+
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
@@ -56,6 +95,6 @@ for row in csv_reader:
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejercicio de clase 3 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+" | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)))
+print("\t Ejercicio de clase 3 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+" | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,edadArray,promedioNotaArray))  +" | R^2 2 = "+str(r2_segundafuncion(horasEstudioArray,edadArray,promedioNotaArray)))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()

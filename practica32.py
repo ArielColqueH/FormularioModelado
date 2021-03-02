@@ -1,4 +1,5 @@
 import csv
+import math
 def promedio(arr):
     sum = 0
     for i in arr:
@@ -38,6 +39,48 @@ def alpha_0(arrx1,arry1):
     res=dividendo/divisor;
     return res
 
+
+
+
+#-----regresion lineal-----
+
+def y_estimado(arrx1,arry1):
+    arrEstimado=[]
+    for i in arrx1:
+        element = (1 / alpha_0(arrx1,arry1)+alpha_1(arrx1,arry1)*i)
+        arrEstimado.append(element)
+    return arrEstimado
+
+
+def sumatoria_y_menos_ypromedio(arry):
+    sum = 0
+    for i in arry:
+        sum += (i-promedio(arry))**2
+    return sum
+
+def sumatoria_y_menos_yestimado(arry,arryestimado):
+    sum = 0
+    for i in range(len(arry)):
+        sum += ((arry[i]-arryestimado[i])**2)
+    return sum
+
+
+def r2_primerafuncion(arrx,arry):
+    arry_estimado=y_estimado(arrx,arry)
+    dividendo=sumatoria_y_menos_ypromedio(arry_estimado)
+    divisor=sumatoria_y_menos_ypromedio(arry)
+    res=dividendo/divisor;
+    return res
+
+
+def r2_segundafuncion (arrx,arry):
+    arry_estimado = y_estimado(arrx, arry)
+    dividendo = sumatoria_y_menos_yestimado(arry,arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = 1-(dividendo / divisor);
+    return res
+
+
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
@@ -57,6 +100,6 @@ for row in csv_reader:
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejericicio 2 : \t"+"| a1 = "+str(alpha_1(horasEstudioArray,promedioNotaArray))+" | a0 = "+str(alpha_0(horasEstudioArray,promedioNotaArray)))
+print("\t Ejericicio 2 : \t"+"| a1 = "+str(alpha_1(horasEstudioArray,promedioNotaArray))+" | a0 = "+str(alpha_0(horasEstudioArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,promedioNotaArray))  +" | R^2 2 = "+str(r2_segundafuncion(horasEstudioArray,promedioNotaArray)))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
