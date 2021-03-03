@@ -22,6 +22,11 @@ def sumatoria_sqrt(arr):
         sum += (i ** 2)
     return sum
 
+def sumatoria_arr1_arr2(arrx1, arrx2):
+    sum = 0
+    for i in range(len(arrx1)):
+        sum += (arrx1[i]*arrx2[i])
+    return sum
 
 def sumatoria_coseno(arr):
     sum = 0
