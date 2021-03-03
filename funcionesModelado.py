@@ -140,102 +140,11 @@ def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
                 for k in range(n):
                     result[i][j] = result[i][j] + matrixN[i][k] * matrixM[k][j]
 
-        print('resultado: ')
-        imprimir_matriz(result)
 
 
-n=0
-m=0
-def readM(n):
-    matriz =[]
-    for i in range(n):
-        matriz.append([0]*n)
-    for i in range(n):
-        for j in range(n):
-            print("Elemento [",i,"][",j,"]= ",end="")
-            matriz[i][j]=int(input())
-    return matriz
 
-def printM(M):
-    for i in M:
-        for j in i:
-            print(j, end=" ")
-        print()
-
-def multiM(M,N):
-    R = []
-    for i in range(n):
-        R.append([0]*n)
-    for i in range(n):
-        for j in range(n):
-            for k in range(n):
-                R[i][j]+=M[i][k]*N[k][j]
-    return R
-
-def subM(M,N):
-    R = []
-    for i in range(n):
-        R.append([0]*n)
-    for i in range(n):
-        for j in range(n):
-            R[i][j]=M[i][j]-N[i][j]
-    return R
-
-def KI(k):
-    R = []
-    for i in range(n):
-        R.append([0]*n)
-    for i in range(n):
-        R[i][i]=k
-    return R
-
-def trazM(M):
-    t=0
-    for i in range(n):
-        t+=M[i][i]
-    return t
-
-def kM(k,M):
-    R = []
-    for i in range(n):
-        R.append([0]*n)
-    for i in range(n):
-        for j in range(n):
-            R[i][j]=k*M[i][j]
-    return R
-
-n=int(input("Dimension de la matriz"))
-while(n<0):
-    n = int(input("Dimension de la matriz"))
-A = readM(n)
-Bi = A
-
-for i in range(1,n-1):
-    bi=trazM(Bi)/i
-    ##print("b",i,"=",bi)
-    Bi=multiM(A,subM(Bi,KI(bi)))
-    ##print("B",i+1)
-    ##printM(Bi)
-
-#print("b",n-1,"=",end="")
-bip=trazM(Bi)/(n-1)
-#print(bip)
-
-#print("B",n,"=",end="")
-Biu=multiM(A,subM(Bi,KI(bip)))
-#print(Biu)
-
-#print("B",n,"=",end="")
-biu=trazM(Biu)/(n)
-#print(biu)
-
-print("La inversa de la matris es :")
-invM=kM(1/biu,subM(Bi,KI(bip)))
-printM(invM)
-
-# A = [[1, 4, 5],
-#      [5, 3, 4],
-#      [1, 8, 9]]
+A = [[1, 4],
+     [5, 3]]
 #
 # B = [[1, 4],
 #      [2, 3],
@@ -250,3 +159,53 @@ def traspuesta_matriz(matriz):
             t[i].append(matriz[j][i])
 
     return t
+
+#-----imprimir-----
+
+def subM(M,N):
+    n = len(M)
+    R = []
+    for i in range(n):
+        R.append([0]*n)
+    for i in range(n):
+        for j in range(n):
+            R[i][j]=M[i][j]-N[i][j]
+    return R
+
+def KI(k,n):
+    R = []
+    for i in range(n):
+        R.append([0]*n)
+    for i in range(n):
+        R[i][i]=k
+    return R
+
+def trazM(M):
+    n = len(M)
+    t=0
+    for i in range(n):
+        t+=M[i][i]
+    return t
+
+def kM(k,M):
+    n = len(M)
+    R = []
+    for i in range(n):
+        R.append([0]*n)
+    for i in range(n):
+        for j in range(n):
+            R[i][j]=k*M[i][j]
+    return R
+
+def inversa(M):
+    n = len(M)
+    Bi = A
+    for i in range(1, n - 1):
+        bi = trazM(Bi) / i
+        Bi = multiplicacion_dos_matrices_n_m(A, subM(Bi, KI(bi,n)))
+    bip = trazM(Bi) / (n - 1)
+    Biu = multiplicacion_dos_matrices_n_m(A, subM(Bi, KI(bip,n)))
+    biu = trazM(Biu) / (n)
+    print("La inversa de la matris es :")
+    invM = kM(1 / biu, subM(Bi, KI(bip,n)))
+    return invM
