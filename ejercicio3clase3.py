@@ -113,8 +113,6 @@ def multiplicacion_matrices_vector_n_m(matrixN, vect):
     columna = 1
     n = len(vect)
     result = [[0 for i in range(columna)] for j in range(fila)]
-    print('fila:' + str(len(result)))
-    print('columna:' + str(len(result[0])))
     for i in range(fila):
         for j in range(columna):
             for k in range(n):

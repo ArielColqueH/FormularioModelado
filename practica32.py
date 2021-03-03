@@ -113,8 +113,6 @@ def multiplicacion_matrices_vector_n_m(matrixN, vect):
     columna = 1
     n = len(vect)
     result = [[0 for i in range(columna)] for j in range(fila)]
-    print('fila:' + str(len(result)))
-    print('columna:' + str(len(result[0])))
     for i in range(fila):
         for j in range(columna):
             for k in range(n):
@@ -195,7 +193,7 @@ def crearMatriz(arrx1, arrx2):
     w, h = 2, len(arrx1);
     result = [[0 for x in range(w)] for y in range(h)]
     for i in range(len(arrx1)):
-        result[i][0] = arrx1[i]
+        result[i][0] = 1
         result[i][1] = arrx2[i]
     return result
 
@@ -223,4 +221,5 @@ print("---------- ---------- ---------- ---------- ---------- ---------- -------
 print("Matriz B:")
 aux = crearMatriz(horasEstudioArray, edadArray)
 imprimir_matriz(b_arreglos(aux, promedioNotaArray))
+print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
