@@ -1,10 +1,13 @@
 import csv
 import math
+
+
 def promedio(arr):
     sum = 0
     for i in arr:
         sum += i
     return sum / len(arr)
+
 
 def sumatoria_sqrt(arr):
     sum = 0
@@ -12,64 +15,88 @@ def sumatoria_sqrt(arr):
         sum += (i ** 2)
     return sum
 
+
 def sumatoria_naturales(arr):
     sum = 0
     for i in arr:
         sum += i
     return sum
 
-def sumatoria_ln(arr):
+
+def sumatoria_coseno(arr):
     sum = 0
     for i in arr:
-        sum += math.log(i)
-    return sum
-def sumatoria_ln_y(arrx,arry):
-    sum = 0
-    for i in range(len(arrx)):
-        sum += math.log(arrx[i])*math.log(arry[i])
+        sum += math.cos(math.radians(i))
     return sum
 
-def sumatoria_ln_doble(arrx1,arrx2):
+
+def sumatoria_seno(arr):
+    sum = 0
+    for i in arr:
+        sum += math.sin(math.radians(i))
+    return sum
+
+
+def sumatoria_arr1_arr2(arrx1, arrx2):
     sum = 0
     for i in range(len(arrx1)):
-        sum += math.log(arrx1[i])*math.log(arrx2[i])
+        sum += (arrx1[i]*arrx2[i])
     return sum
 
-def sumatoria_ln_sqrt(arr):
+
+def sumatoria_y_seno(arrx, arry):
+    sum = 0
+    for i in range(len(arrx)):
+        sum += math.sin(math.radians(arrx[i])) * arry[i]
+    return sum
+
+
+def sumatoria_y_coseno(arrx, arry):
+    sum = 0
+    for i in range(len(arrx)):
+        sum += (math.cos(math.radians(arrx[i])) * arry[i])
+    return sum
+
+
+def sumatoria_coseno_sqrt(arr):
     sum = 0
     for i in arr:
-        sum += (math.log(i)**2)
+        sum += (math.cos(math.radians(i))) ** 2
     return sum
 
 
-def alpha_2(arrx1,arrx2,arry1):
-    n=len(arrx1)
-    b=(sumatoria_ln_doble(arrx1,arrx2)*sumatoria_ln(arrx1)-sumatoria_ln_sqrt(arrx1)*sumatoria_ln(arrx2))
-    a=n*sumatoria_ln_sqrt(arrx1)-((sumatoria_ln(arrx1))**2)
-    dividendo=(sumatoria_ln_y(arrx1,arry1)*(n-1))*b-(sumatoria_ln_y(arrx1,arry1)*sumatoria_ln(arrx2))*a+(sumatoria_ln_y(arrx2,arry1)*sumatoria_ln(arrx1))*a
-    divisor=(((sumatoria_ln(arrx1)*sumatoria_ln(arrx2))*(1-n))*b)-((sumatoria_ln_doble(arrx1,arrx2)*sumatoria_ln(arrx2)-sumatoria_ln_sqrt(arrx2)*sumatoria_ln(arrx1))*a)
-    res=dividendo/divisor;
-    return res
-def alpha_1 (arrx1,arrx2,arry1):
-    n=len(arrx1)
-    dividendo=alpha_2(arrx1,arrx2,arry1)*(sumatoria_ln(arrx1)*sumatoria_ln(arrx2))-sumatoria_ln_y(arrx1,arry1)+n*sumatoria_ln_doble(arrx1,arry1)-n*alpha_2(arrx1,arrx2,arry1)*sumatoria_ln_doble(arrx1,arrx2)
-    divisor=(n*sumatoria_ln_sqrt(arrx1))-(sumatoria_ln(arrx1))**2
-    res=dividendo/divisor;
-    return res
+def sumatoria_seno_sqrt(arr):
+    sum = 0
+    for i in arr:
+        sum += (math.sin(math.radians(i))) ** 2
+    return sum
 
-def alpha_0 (arrx1,arrx2,arry1):
-    n=len(arrx1)
-    dividendo=sumatoria_ln(arry1)-alpha_1(arrx1,arrx2,arry1)*sumatoria_ln(arrx1)-alpha_2(arrx1,arrx2,arry1)*sumatoria_ln(arrx2)
-    divisor=n
-    res=dividendo/divisor;
-    return res
+
+def sumatoria_seno_coseno_sqrt(arrx1, arrx2):
+    sum = 0
+    for i in range(len(arrx1)):
+        sum += ((math.sin(math.radians(arrx1[i])) ** 2) * (math.cos(math.radians(arrx2[i])) ** 2))
+    return sum
+
+
+def beta_2(arrx1,arrx2,arry1):
+  dividendo=((sumatoria_arr1_arr2(arry1,arrx2)*sumatoria_sqrt(arrx1))-(sumatoria_arr1_arr2(arry1,arrx1)*sumatoria_arr1_arr2(arrx1,arrx2)))
+  divisor=((sumatoria_sqrt(arrx2)*sumatoria_sqrt(arrx1))-(sumatoria_arr1_arr2(arrx1,arrx2))**2)
+  res=dividendo/divisor;
+  return res
+
+def beta_1(arrx1,arrx2,arry1):
+  dividendo=(sumatoria_arr1_arr2(arry1,arrx1)-(beta_2(arrx1,arrx2,arry1)*sumatoria_arr1_arr2(arrx1,arrx2)))
+  divisor=sumatoria_sqrt(arrx1)
+  res=dividendo/divisor;
+  return res
 
 # -----regresion lineal-----
 
-def y_estimado(arrx1, arrx2,arry1):
+def y_estimado(arrx1, arrx2, arry1):
     arrEstimado = []
     for i in range(len(arrx1)):
-        element = (pow(math.e,alpha_0(arrx1,arrx2,arry1))*pow(arrx1[i],alpha_1(arrx1,arrx2,arry1))*pow(arrx2[i],alpha_2(arrx1,arrx2,arry1)))
+        element = beta_1(arrx1,arrx2,arry1)*arrx1[i]+beta_2(arrx1,arrx2,arry1)*arrx2[i]
         arrEstimado.append(element)
     return arrEstimado
 
@@ -196,14 +223,17 @@ def kM(k, M):
 def inversa_matriz(M):
     n = len(M)
     Bi = M
-    for i in range(1, n - 1):
-        bi = trazM(Bi) / i
-        Bi = multiplicacion_dos_matrices_n_m(M, subM(Bi, KI(bi, n)))
-    bip = trazM(Bi) / (n - 1)
-    Biu = multiplicacion_dos_matrices_n_m(M, subM(Bi, KI(bip, n)))
-    biu = trazM(Biu) / (n)
-    invM = kM(1 / biu, subM(Bi, KI(bip, n)))
-    return invM
+    try:
+        for i in range(1, n - 1):
+            bi = trazM(Bi) / i
+            Bi = multiplicacion_dos_matrices_n_m(M, subM(Bi, KI(bi, n)))
+        bip = trazM(Bi) / (n - 1)
+        Biu = multiplicacion_dos_matrices_n_m(M, subM(Bi, KI(bip, n)))
+        biu = trazM(Biu) / (n)
+        invM = kM(1 / biu, subM(Bi, KI(bip, n)))
+        return invM
+    except:
+        print("Division by zero")
 
 
 def b_arreglos(matriz, matrizy):
@@ -213,14 +243,15 @@ def b_arreglos(matriz, matrizy):
     return resmatriz
 
 
-def crearMatriz(arrx1, arrx2):
+def crearMatriz(arrx1):
     w, h = 3, len(arrx1);
     result = [[0 for x in range(w)] for y in range(h)]
     for i in range(len(arrx1)):
         result[i][0] = 1
         result[i][1] = arrx1[i]
-        result[i][2] = arrx2[i]
+        result[i][2] = 1
     return result
+
 
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -229,8 +260,8 @@ promedioNotaArray = []
 edadArray = []
 materiaArray = []
 horasEstudioArray = []
-recreoArray=[]
-amigosArray=[]
+recreoArray = []
+amigosArray = []
 
 for row in csv_reader:
     promedio_nota, edad, materia, horas_estudio, recreo, amigos = row
@@ -241,11 +272,12 @@ for row in csv_reader:
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejericicio 1 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+"\t | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)) +"\t | a0 = "+str(alpha_0(horasEstudioArray,edadArray,promedioNotaArray))+ " | R^2  = " + str(
+'''print("\t Ejericicio 1 Clase : \t" + "| B1 = " + str(
+    beta_1(horasEstudioArray, edadArray, promedioNotaArray)) + "\t | B2 = " + str(
+    beta_2(horasEstudioArray, edadArray, promedioNotaArray)) + " | R^2 1 = " + str(
     r2_primerafuncion(horasEstudioArray, edadArray, promedioNotaArray)))
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ")
-print("Matriz B:")
-aux = crearMatriz(horasEstudioArray, edadArray)
+print("Matriz B:")'''
+aux = crearMatriz(horasEstudioArray)
 imprimir_matriz(b_arreglos(aux, promedioNotaArray))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
