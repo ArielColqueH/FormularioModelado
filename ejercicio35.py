@@ -1,86 +1,11 @@
 import csv
 import math
+# -----matrices----
 def promedio(arr):
     sum = 0
     for i in arr:
         sum += i
     return sum / len(arr)
-
-def sumatoria_sqrt(arr):
-    sum = 0
-    for i in arr:
-        sum += (i ** 2)
-    return sum
-
-def sumatoria_naturales(arr):
-    sum = 0
-    for i in arr:
-        sum += i
-    return sum
-
-def sumatoria_naturales_cambio_variable(arry):
-    sum = 0
-    for i in arry:
-        sum += 1/i
-    return sum
-def sumatoria_naturales_cambio_variable_arrx(arrx,arry):
-    sum = 0
-    for i in range(len(arrx)):
-        sum += 1/((arry[i])*arrx[i])
-    return sum
-
-def alpha_1(arrx1,arry1):
-    n=len(arrx1)
-    dividendo=sumatoria_naturales_cambio_variable(arry1)*sumatoria_naturales(arrx1)-sumatoria_naturales_cambio_variable_arrx(arrx1,arry1)*n
-    divisor=sumatoria_naturales(arrx1)**2-sumatoria_sqrt(arrx1)
-    res=dividendo/divisor;
-    return res
-
-def alpha_0(arrx1,arry1):
-    n = len(arrx1)
-    dividendo=sumatoria_naturales_cambio_variable(arry1)-alpha_1(arrx1,arry1)*sumatoria_naturales(arrx1)
-    divisor=n
-    res=dividendo/divisor;
-    return res
-
-#-----regresion lineal-----
-def y_estimado(arrx1,arry1):
-    arrEstimado=[]
-    for i in arrx1:
-        element = (1 / alpha_0(arrx1,arry1)+alpha_1(arrx1,arry1)*i)
-        arrEstimado.append(element)
-    return arrEstimado
-
-def sumatoria_y_menos_ypromedio(arry):
-    sum = 0
-    for i in arry:
-        sum += (i-promedio(arry))**2
-    return sum
-
-def sumatoria_y_menos_yestimado(arry,arryestimado):
-    sum = 0
-    for i in range(len(arry)):
-        sum += ((arry[i]-arryestimado[i])**2)
-    return sum
-
-
-def r2_primerafuncion(arrx,arry):
-    arry_estimado=y_estimado(arrx,arry)
-    dividendo=sumatoria_y_menos_ypromedio(arry_estimado)
-    divisor=sumatoria_y_menos_ypromedio(arry)
-    res=dividendo/divisor;
-    return res
-
-
-def r2_segundafuncion (arrx,arry):
-    arry_estimado = y_estimado(arrx, arry)
-    dividendo = sumatoria_y_menos_yestimado(arry,arry_estimado)
-    divisor = sumatoria_y_menos_ypromedio(arry)
-    res = 1-(dividendo / divisor);
-    return res
-
-
-# -----matrices----
 
 def imprimir_matriz(matriz):
     p = len(matriz)
@@ -189,13 +114,56 @@ def b_arreglos(matriz, matrizy):
     return resmatriz
 
 
-def crearMatriz(arrx1):
-    w, h = 2, len(arrx1);
+def crearMatriz(arrx1, arrx2, arrx3):
+    w, h = 4, len(arrx1);
     result = [[0 for x in range(w)] for y in range(h)]
     for i in range(len(arrx1)):
         result[i][0] = 1
         result[i][1] = arrx1[i]
+        result[i][2] = arrx2[i]
+        result[i][3] = arrx3[i]
     return result
+
+
+
+# -----regresion lineal-----
+
+def y_estimado(arrx1, arrx2, arrx3, arry1):
+    arrEstimado = []
+    for i in range(len(arrx1)):
+        element = a0[0] + (a1[0]*arrx1[i]) + (a2[0]*arrx2[i]) + (a3[0]*arrx3[i])
+        arrEstimado.append(element)
+    return arrEstimado
+
+
+def sumatoria_y_menos_ypromedio(arry):
+    sum = 0
+    for i in arry:
+        sum += (i - promedio(arry)) ** 2
+    return sum
+
+
+def sumatoria_y_menos_yestimado(arry, arryestimado):
+    sum = 0
+    for i in range(len(arry)):
+        sum += ((arry[i] - arryestimado[i]) ** 2)
+    return sum
+
+
+def r2_primerafuncion(arrx1, arrx2,arrx3, arry):
+    arry_estimado = y_estimado(arrx1, arrx2,arrx3, arry)
+    dividendo = sumatoria_y_menos_ypromedio(arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = dividendo / divisor;
+    return res
+
+
+def r2_segundafuncion(arrx1, arrx2,arrx3,arry):
+    arry_estimado = y_estimado(arrx1, arrx2,arrx3, arry)
+    dividendo = sumatoria_y_menos_yestimado(arry, arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = 1 - (dividendo / divisor);
+    return res
 
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -204,8 +172,8 @@ promedioNotaArray = []
 edadArray = []
 materiaArray = []
 horasEstudioArray = []
-recreoArray=[]
-amigosArray=[]
+recreoArray = []
+amigosArray = []
 
 for row in csv_reader:
     promedio_nota, edad, materia, horas_estudio, recreo, amigos = row
@@ -215,11 +183,17 @@ for row in csv_reader:
     horasEstudioArray.append(float(horas_estudio))
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejericicio 2 : \t"+"| a1 = "+str(alpha_1(horasEstudioArray,promedioNotaArray))+" | a0 = "+str(alpha_0(horasEstudioArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,promedioNotaArray)))
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
+print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 print("Matriz B:")
-aux = crearMatriz(horasEstudioArray)
+aux = crearMatriz(horasEstudioArray, edadArray, materiaArray)
 imprimir_matriz(b_arreglos(aux, promedioNotaArray))
+result=b_arreglos(aux,promedioNotaArray)
+a0=result[0]
+a1=result[1]
+a2=result[2]
+a3=result[3]
+##print(a0[0])
+print("\t Ejericicio 5 : \t" + " | R^2 1 = " + str(
+    r2_primerafuncion(horasEstudioArray, edadArray, materiaArray, promedioNotaArray)))
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
