@@ -247,6 +247,8 @@ def b_arreglos(matriz, matrizy):
     matriz1 = multiplicacion_dos_matrices_n_m(traspuesta_matriz(matriz), matriz)
     matriz2 = multiplicacion_dos_matrices_n_m(inversa_matriz(matriz1), traspuesta_matriz(matriz))
     resmatriz = multiplicacion_matrices_vector_n_m(matriz2, matrizy)
+    # print('filas'+str(len(resmatriz[0])))
+    # print('columnas'+str(len(resmatriz)))
     return resmatriz
 
 
@@ -291,14 +293,22 @@ def vector_desviacion_estandar_b(matriz,s2):
                 vector.append(math.sqrt(matriz[i][j]*s2))
     return vector
 
-def betas_significativos_liminf_limsup(vector_varianzas,vector_desviacion,confianza):
-    n=len(vector_varianzas)
+
+def betas_significativos_liminf_limsup(matriz_betas,vector_desviacion,confianza):
+    n=len(matriz_betas)
     for i in range(n):
-        liminf=vector_varianzas[i]-confianza*vector_desviacion[i]
-        limsup=vector_varianzas[i]+confianza*vector_desviacion[i]
-        print(str(liminf)+'\t<\t'+'X'+'\t<\t'+str(limsup))
+        liminf=matriz_betas[i][0]-confianza*vector_desviacion[i]
+        limsup=matriz_betas[i][0]+confianza*vector_desviacion[i]
+        if liminf<matriz_betas[i][0] and matriz_betas[i][0]<limsup:
+            print(str(liminf)+'\t<\t'+str(matriz_betas[i][0])+'\tB'+str(i)+'\t'+str(limsup)+'\t Aceptado')
+        else:
+            print(str(liminf) + '\t<\t' + str(matriz_betas[i][0]) + '\tB'+str(i)+'\t' + str(limsup) + '\t Rechazado')
 
-
+def prueba_hipotesis(matriz_betas,s2,confianza):
+    filas=len(matriz_betas)
+    for i in range (filas):
+        t=matriz_betas[i][0]/s2[i]
+        print(str(t)+' > '+str(confianza))
 
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -325,7 +335,8 @@ print("\t Ejericicio 4 : \t" + "| a0 = " + str(
     r2_primerafuncion(horasEstudioArray, edadArray, promedioNotaArray)))
 print("Matriz B:")
 aux = crearMatriz(horasEstudioArray, edadArray)
-imprimir_matriz(b_arreglos(aux, promedioNotaArray))
+matriz_betas = b_arreglos(aux, promedioNotaArray)
+imprimir_matriz(matriz_betas)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 print("Matriz covarianzas:")
 c=matriz_covarianzas(aux)
@@ -334,9 +345,13 @@ print('S2 : '+str(s_2(horasEstudioArray, edadArray, promedioNotaArray,2)))
 print("Matriz Varianza Betas:")
 vv=vector_varianzas_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,2))
 imprimir_vector(vv)
+
 print("Matriz Desviacion Estandar Betas:")
 vde=vector_desviacion_estandar_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,2))
 imprimir_vector(vde)
-betas_significativos_liminf_limsup(vv,vde,2.0423)
+print("Limites Min Max:")
+betas_significativos_liminf_limsup(matriz_betas,vde,2.0423)
+print("Prueba de Hipotesis:")
+prueba_hipotesis(matriz_betas,vde,2.0423)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
