@@ -106,6 +106,7 @@ def r2_segundafuncion(arrx1, arrx2, arry):
 
 # -----matrices----
 
+
 def imprimir_matriz(matriz):
     p = len(matriz)
     q = len(matriz[0])
@@ -113,7 +114,13 @@ def imprimir_matriz(matriz):
         for j in range(q):
             print(format(matriz[i][j], "<25"), end="")
         print()
+    print()
 
+def imprimir_vector(vector):
+    n = len(vector)
+    for i in range(n):
+        print(vector[i])
+    print()
 
 def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
     p = len(matrixN)
@@ -210,8 +217,9 @@ def b_arreglos(matriz, matrizy):
     matriz1 = multiplicacion_dos_matrices_n_m(traspuesta_matriz(matriz), matriz)
     matriz2 = multiplicacion_dos_matrices_n_m(inversa_matriz(matriz1), traspuesta_matriz(matriz))
     resmatriz = multiplicacion_matrices_vector_n_m(matriz2, matrizy)
+    # print('filas'+str(len(resmatriz[0])))
+    # print('columnas'+str(len(resmatriz)))
     return resmatriz
-
 
 def crearMatriz(arrx1, arrx2):
     w, h = 3, len(arrx1);
@@ -221,6 +229,55 @@ def crearMatriz(arrx1, arrx2):
         result[i][1] = arrx1[i]
         result[i][2] = arrx2[i]
     return result
+
+def matriz_covarianzas(matriz):
+    matriz1 = multiplicacion_dos_matrices_n_m(traspuesta_matriz(matriz), matriz)
+    resmatriz = (inversa_matriz(matriz1))
+    return resmatriz
+
+def s_2(arrx1, arrx2, arry,k):
+    n = len(arrx1)
+    arry_estimado = y_estimado(arrx1, arrx2, arry)
+    dividendo = sumatoria_y_menos_ypromedio(arry_estimado)
+    divisor=n-k
+    res=dividendo/divisor
+    return res
+
+def vector_varianzas_b(matriz,s2):
+    filas=len(matriz)
+    columnas=len(matriz[0])
+    vector=[]
+    for i in range (filas):
+        for j in range (columnas):
+            if(i==j):
+                vector.append(matriz[i][j]*s2)
+    return vector
+
+def vector_desviacion_estandar_b(matriz,s2):
+    filas=len(matriz)
+    columnas=len(matriz[0])
+    vector=[]
+    for i in range (filas):
+        for j in range (columnas):
+            if(i==j):
+                vector.append(math.sqrt(matriz[i][j]*s2))
+    return vector
+
+
+def betas_significativos_liminf_limsup(matriz_betas,vector_desviacion,confianza):
+    n=len(matriz_betas)
+    for i in range(n):
+        liminf=matriz_betas[i][0]-confianza*vector_desviacion[i]
+        limsup=matriz_betas[i][0]+confianza*vector_desviacion[i]
+        print(str(liminf)+'\t<\t'+'B'+str(i)+'\t<\t'+str(limsup))
+    print()
+
+def prueba_hipotesis(matriz_betas,s2,confianza):
+    filas=len(matriz_betas)
+    for i in range (filas):
+        t=matriz_betas[i][0]/s2[i]
+        print('t'+str(i)+'\t'+str(t)+' > '+str(confianza))
+    print()
 
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -246,6 +303,25 @@ print("\t Ejericicio 1 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,p
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ")
 print("Matriz B:")
 aux = crearMatriz(horasEstudioArray, edadArray)
-imprimir_matriz(b_arreglos(aux, promedioNotaArray))
+matriz_betas = b_arreglos(aux, promedioNotaArray)
+imprimir_matriz(matriz_betas)
+print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
+confianza_t_student=2.0423
+numero_variable_independientes=2
+print("Matriz covarianzas:")
+c=matriz_covarianzas(aux)
+imprimir_matriz(c)
+print('S2 : '+str(s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes)))
+print()
+print("Matriz Varianza Betas:")
+vv=vector_varianzas_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes))
+imprimir_vector(vv)
+print("Matriz Desviacion Estandar Betas:")
+vde=vector_desviacion_estandar_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes))
+imprimir_vector(vde)
+print("Limites Min Max:")
+betas_significativos_liminf_limsup(matriz_betas,vde,confianza_t_student)
+print("Prueba de Hipotesis:")
+prueba_hipotesis(matriz_betas,vde,confianza_t_student)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 csv_file.close()
