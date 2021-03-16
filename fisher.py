@@ -1,10 +1,13 @@
 import csv
 import math
+
+
 def promedio(arr):
     sum = 0
     for i in arr:
         sum += i
     return sum / len(arr)
+
 
 def sumatoria_sqrt(arr):
     sum = 0
@@ -12,95 +15,125 @@ def sumatoria_sqrt(arr):
         sum += (i ** 2)
     return sum
 
+
 def sumatoria_naturales(arr):
     sum = 0
     for i in arr:
         sum += i
     return sum
 
-def sumatoria_naturales_cambio_variable(arr):
+
+def sumatoria_coseno(arr):
     sum = 0
     for i in arr:
-        sum += math.e**(1/i)
+        sum += math.cos(math.radians(i))
     return sum
 
-def sumatoria_naturales_cambio_variable_arrx(arrx,arry):
+
+def sumatoria_seno(arr):
+    sum = 0
+    for i in arr:
+        sum += math.sin(math.radians(i))
+    return sum
+
+
+def sumatoria_seno_coseno(arrx1, arrx2):
+    sum = 0
+    for i in range(len(arrx1)):
+        sum += (math.sin(math.radians(arrx1[i])) * math.cos(math.radians(arrx2[i])))
+    return sum
+
+
+def sumatoria_y_seno(arrx, arry):
     sum = 0
     for i in range(len(arrx)):
-        sum += (math.e**(1/arry[i]))*(arrx[i])
+        sum += math.sin(math.radians(arrx[i])) * arry[i]
     return sum
 
-def sumatoria_naturales_arrx1_arrx2(arrx1,arrx2):
+
+def sumatoria_y_coseno(arrx, arry):
+    sum = 0
+    for i in range(len(arrx)):
+        sum += (math.cos(math.radians(arrx[i])) * arry[i])
+    return sum
+
+
+def sumatoria_coseno_sqrt(arr):
+    sum = 0
+    for i in arr:
+        sum += (math.cos(math.radians(i))) ** 2
+    return sum
+
+
+def sumatoria_seno_sqrt(arr):
+    sum = 0
+    for i in arr:
+        sum += (math.sin(math.radians(i))) ** 2
+    return sum
+
+
+def sumatoria_seno_coseno_sqrt(arrx1, arrx2):
     sum = 0
     for i in range(len(arrx1)):
-        sum += (arrx1[i]+arrx2[i])
+        sum += ((math.sin(math.radians(arrx1[i])) ** 2) * (math.cos(math.radians(arrx2[i])) ** 2))
     return sum
 
-def alpha_2(arrx1,arrx2,arry1):
-    dividendo=sumatoria_naturales_cambio_variable_arrx(arrx2,arry1)*(sumatoria_sqrt(arrx1)-((sumatoria_naturales(arrx1))**2))
-    divisor=(sumatoria_naturales_arrx1_arrx2(arrx1,arrx2))**2-((sumatoria_sqrt(arrx2))*(sumatoria_sqrt(arrx1)))
-    res=dividendo/divisor
-    res = 78.27509089450399
+
+def alpha_1(arrx1, arrx2, arry1):
+    dividendo = sumatoria_y_coseno(arrx2, arry1) * sumatoria_seno_sqrt(arrx1) - (
+                sumatoria_y_seno(arrx1, arry1) * (sumatoria_seno_coseno(arrx1, arrx2)))
+    divisor = (sumatoria_seno_sqrt(arrx1) * sumatoria_coseno_sqrt(arrx2)) - (sumatoria_seno_coseno(arrx1, arrx2) ** 2)
+    res = dividendo / divisor
     return res
 
 
-def alpha_1(arrx1,arrx2,arry1):
-    dividendo=sumatoria_naturales_cambio_variable_arrx(arrx1,arry1)-alpha_2(arrx1,arrx2,arry1)*(sumatoria_naturales_arrx1_arrx2(arrx1,arrx2))
-    divisor=sumatoria_sqrt(arrx1)
-    res=dividendo/divisor;
-    res=181.71689727978412
+def alpha_0(arrx1, arry1):
+    dividendo = sumatoria_y_coseno(arrx2, arry1) - (alpha_1(arrx1, arrx2, arry1) * sumatoria_coseno_sqrt(arrx2))
+    divisor = sumatoria_seno_coseno(arrx1, arrx2)
+    res = dividendo / divisor
     return res
 
-#-----regresion lineal-----
-#
-# def y_estimado(arrx1,arrx2,arry1):
-#     arrEstimado=[]
-#
-#     for i in range(len(arrx1)):
-#         element = (1 / (math.log(alpha_1(arrx1,arrx2,arry1)*arrx1[i]+arrx2[i]*alpha_2(arrx1,arrx2,arry1))))
-#         arrEstimado.append(element)
-#
-#     return arrEstimado
 
-def y_estimado(arrx1,arrx2,arry1):
-    arrEstimado=[]
+# -----regresion lineal-----
 
+def y_estimado(arrx1):
+    arrEstimado = []
     for i in range(len(arrx1)):
-        element = (1 / (math.log(alpha_1(arrx1,arrx2,arry1)*arrx1[i]+arrx2[i]*alpha_2(arrx1,arrx2,arry1))))
+        element = 0+2*arrx1[i]
         arrEstimado.append(element)
-
     return arrEstimado
-
 
 def sumatoria_y_menos_ypromedio(arry):
     sum = 0
     for i in arry:
-        sum += (i-promedio(arry))**2
+        sum += (i - promedio(arry)) ** 2
     return sum
 
-def sumatoria_y_menos_yestimado(arry,arryestimado):
+
+def sumatoria_y_menos_yestimado(arry, arryestimado):
     sum = 0
     for i in range(len(arry)):
-        sum += ((arry[i]-arryestimado[i])**2)
+        sum += ((arry[i] - arryestimado[i]) ** 2)
     return sum
 
 
-def r2_primerafuncion(arrx1,arrx2,arry):
-    arry_estimado=y_estimado(arrx1,arrx2,arry)
-    dividendo=sumatoria_y_menos_ypromedio(arry_estimado)
-    divisor=sumatoria_y_menos_ypromedio(arry)
-    res=dividendo/divisor;
+def r2_primerafuncion(arrx1, arrx2, arry):
+    arry_estimado = y_estimado(arrx1, arrx2, arry)
+    dividendo = sumatoria_y_menos_ypromedio(arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = dividendo / divisor;
     return res
 
-# -----matrices----
-def crearMatriz(arrx1, arrx2):
-    w, h = 2, len(arrx1);
-    result = [[0 for x in range(w)] for y in range(h)]
-    for i in range(len(arrx1)):
-        result[i][0] = arrx1[i]
-        result[i][1] = arrx2[i]
-    return result
 
+def r2_segundafuncion(arrx1, arrx2, arry):
+    arry_estimado = y_estimado(arrx1, arrx2, arry)
+    dividendo = sumatoria_y_menos_yestimado(arry, arry_estimado)
+    divisor = sumatoria_y_menos_ypromedio(arry)
+    res = 1 - (dividendo / divisor);
+    return res
+
+
+# -----matrices----
 
 def imprimir_matriz(matriz):
     p = len(matriz)
@@ -217,12 +250,11 @@ def b_arreglos(matriz, matrizy):
     return resmatriz
 
 
-def crearMatriz(arrx1, arrx2):
-    w, h = 2, len(arrx1);
+def crearMatriz(arrx1):
+    w, h = 1, len(arrx1);
     result = [[0 for x in range(w)] for y in range(h)]
     for i in range(len(arrx1)):
-        result[i][0] = math.sin(math.radians(arrx1[i]))
-        result[i][1] = math.cos(math.radians(arrx2[i]))
+        result[i][0] = arrx1[i]
     print()
     return result
 
@@ -275,24 +307,7 @@ def prueba_hipotesis(matriz_betas,s2,confianza):
         print('t'+str(i)+'\t'+str(t)+' > '+str(confianza))
     print()
 
-#-----Fischer-----
-def sec(arry, arry_estimado):
-    sum = 0
-    for i in range(len(arry)):
-        sum += ((arry[i] - arry_estimado[i]) ** 2)
-    return sum
-def scr_sct(arry, arry2):
-    sum = 0
-    for i in range(len(arry)):
-        sum += ((arry[i] - promedio(arry2)) ** 2)
-    return sum
-def fischer(sec,src,k,n,confianza):
-    res=(sec/k)/((src/(n-k)))
-    print('Como', res, '>', confianza)
-    if(res>confianza):
-        print('Se rechaza la Ho')
-    else:
-        print('Se acepta la Ho')
+
 
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -301,8 +316,8 @@ promedioNotaArray = []
 edadArray = []
 materiaArray = []
 horasEstudioArray = []
-recreoArray=[]
-amigosArray=[]
+recreoArray = []
+amigosArray = []
 
 for row in csv_reader:
     promedio_nota, edad, materia, horas_estudio, recreo, amigos = row
@@ -312,46 +327,25 @@ for row in csv_reader:
     horasEstudioArray.append(float(horas_estudio))
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("\t Ejercicio de clase 3 : \t"+"| a2 = "+str(alpha_2(horasEstudioArray,edadArray,promedioNotaArray))+" | a1 = "+str(alpha_1(horasEstudioArray,edadArray,promedioNotaArray)) +" | R^2 1 = "+str(r2_primerafuncion(horasEstudioArray,edadArray,promedioNotaArray)))
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("Matriz B:")
-aux = crearMatriz(horasEstudioArray, edadArray)
-matriz_betas = b_arreglos(aux, promedioNotaArray)
-imprimir_matriz(matriz_betas)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-confianza_t_student=2.0423
+
+Y=[2,4,6,8,10,12]
+B=[1,2,3,4,5,6]
+y_est=y_estimado(B);
 numero_variable_independientes=2
-print("Matriz covarianzas:")
-c=matriz_covarianzas(aux)
-imprimir_matriz(c)
-print('S2 : '+str(s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes)))
-print()
-print("Matriz Varianza Betas:")
-vv=vector_varianzas_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes))
-imprimir_vector(vv)
-print("Matriz Desviacion Estandar Betas:")
-vde=vector_desviacion_estandar_b(c,s_2(horasEstudioArray, edadArray, promedioNotaArray,numero_variable_independientes))
-imprimir_vector(vde)
-print("Limites Min Max:")
-betas_significativos_liminf_limsup(matriz_betas,vde,confianza_t_student)
-print("Prueba de Hipotesis:")
-prueba_hipotesis(matriz_betas,vde,confianza_t_student)
-print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
-print("----- Fischer -----")
-if (alpha_1(horasEstudioArray, edadArray, promedioNotaArray) ==0 and alpha_2(horasEstudioArray, edadArray, promedioNotaArray)==0):
-    print('Se acepta la hipotesis nula')
-else:
-    print('No se acepta la hipotesis nula')
-y_estimado_arreglo=y_estimado(horasEstudioArray, edadArray, promedioNotaArray)
-sec=sec(promedioNotaArray,y_estimado_arreglo)
-src=scr_sct(y_estimado_arreglo,promedioNotaArray)
-stc=scr_sct(promedioNotaArray,promedioNotaArray)
-n=len(promedioNotaArray)
-k=2
-f_tablas= 3.232
-print('sec : '+str(sec))
-print('scr : '+str(src))
-print('stc : '+str(stc))
-fischer(sec,src,k,n,f_tablas)
+sec = sumatoria_y_menos_ypromedio(y_est);
+src=sumatoria_y_menos_yestimado(Y,y_est)
+stc=sumatoria_y_menos_ypromedio(Y)
 csv_file.close()
+n=6
+k=1
+confianza_fischer= 6.608
+
+def f_fischer():
+    if (src==0):
+        return 'src vale 0'
+    else:
+        res = (sec / k) / (src / (n - k))
+        return res
+
+print('fischer calculado : '+str(f_fischer())+'>'+str(confianza_fischer));
