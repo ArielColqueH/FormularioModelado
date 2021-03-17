@@ -304,6 +304,26 @@ def prueba_hipotesis(matriz_betas,s2,confianza):
         print('t'+str(i)+'\t'+str(t)+' > '+str(confianza))
     print()
 
+#-----Fischer-----
+def sec(arry, arry_estimado):
+    sum = 0
+    for i in range(len(arry)):
+        sum += ((arry[i] - arry_estimado[i]) ** 2)
+    return sum
+def scr_sct(arry, arry2):
+    sum = 0
+    for i in range(len(arry)):
+        sum += ((arry[i] - promedio(arry2)) ** 2)
+    return sum
+def fischer(sec,src,k,n,confianza):
+    res=(sec/k)/((src/(n-k)))
+    print('Como', res, '>', confianza)
+    if(res>confianza):
+        print('Se rechaza la Ho')
+    else:
+        print('Se acepta la Ho')
+
+
 csv_file = open('simulacion1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
@@ -350,4 +370,21 @@ betas_significativos_liminf_limsup(matriz_betas,vde,confianza_t_student)
 print("Prueba de Hipotesis:")
 prueba_hipotesis(matriz_betas,vde,confianza_t_student)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
+print("----- Fischer -----")
+if (beta_1(horasEstudioArray, edadArray, promedioNotaArray) ==0 and beta_2(horasEstudioArray, edadArray, promedioNotaArray)==0):
+    print('Se acepta la hipotesis nula')
+else:
+    print('No se acepta la hipotesis nula')
+
+y_estimado_arreglo=y_estimado(horasEstudioArray, edadArray, promedioNotaArray)
+sec=sec(promedioNotaArray,y_estimado_arreglo)
+src=scr_sct(y_estimado_arreglo,promedioNotaArray)
+stc=scr_sct(promedioNotaArray,promedioNotaArray)
+n=len(promedioNotaArray)
+k=2
+f_tablas= 3.232
+print('sec : '+str(sec))
+print('scr : '+str(src))
+print('stc : '+str(stc))
+fischer(sec,src,k,n,f_tablas)
 csv_file.close()
