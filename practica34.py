@@ -348,6 +348,7 @@ for row in csv_reader:
     horasEstudioArray.append(float(horas_estudio))
     recreoArray.append(float(recreo))
     amigosArray.append(float(amigos))
+print(promedioNotaArray)
 print("---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------")
 print("\t Ejericicio 4 : \t" + "| a0 = " + str(
     alpha_0(horasEstudioArray, edadArray, promedioNotaArray)) + "\t | a1 = " + str(
