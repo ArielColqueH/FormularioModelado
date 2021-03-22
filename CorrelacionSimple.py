@@ -1,5 +1,5 @@
 import csv
-import math
+import matplotlib.pyplot as plt
 import numpy as np
 # -----matrices----
 
@@ -154,7 +154,7 @@ def crear_matriz(array):
         nueva_matriz[i][0] = array[i]
     return  nueva_matriz
 
-q=5
+q=30
 # Y = [[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7],[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7]]
 csv_file = open('todo1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -173,4 +173,14 @@ Y=crear_matriz(aux)
 nueva_matrix_y = crear_matrix_y(Y,q)
 nueva_matrix_x = crear_matrix_x(Y,q)
 betas = b_arreglos(nueva_matrix_x,nueva_matrix_y)
-imprimir_matriz(betas)
+# imprimir_matriz(betas)
+x = [None]*30
+for i in range(30):
+    x[i]=(i+1)
+A = np.squeeze(np.asarray(betas))
+print(A)
+plt.plot(x,A)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Simple')
+plt.show()
