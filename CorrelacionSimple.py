@@ -178,7 +178,7 @@ x = [None]*30
 for i in range(30):
     x[i]=(i+1)
 A = np.squeeze(np.asarray(betas))
-print(A)
+# print(A)
 plt.plot(x,A)
 plt.xlabel('x')
 plt.ylabel('y')
