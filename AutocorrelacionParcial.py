@@ -93,8 +93,9 @@ def inversa_matriz(M):
 
 def b_arreglos(matriz, matrizy):
     matriz1 = multiplicacion_dos_matrices_n_m(traspuesta_matriz(matriz), matriz)
-    matriz2 = multiplicacion_dos_matrices_n_m(inversa_matriz(matriz1), traspuesta_matriz(matriz))
+    matriz2 = multiplicacion_dos_matrices_n_m(matriz1, traspuesta_matriz(matriz))
     resmatriz = multiplicacion_dos_matrices_n_m(matriz2, matrizy)
+    #print(resmatriz)
     # print('filas'+str(len(resmatriz[0])))
     # print('columnas'+str(len(resmatriz)))
     return resmatriz
@@ -123,6 +124,17 @@ def crear_matrix_x(matriz_original_y,q):
             nueva_matriz_y[j][i] = aux_matriz_2[j][0]
     return nueva_matriz_y
 
+def mult_y_x(matrizx,matrizy,q):
+    vecaux=[[0 for x in range(1)] for y in range(len(matrizx))]
+    vecq=[0]*q
+    for j in range(q):
+        for i in range(len(matrizx)):
+            vecaux[i][0] = matrizx[i][j]
+        res=b_arreglos(vecaux,matrizy)
+        vecq[j]=res
+    print(vecq)
+    return vecq
+
 def crear_matriz(array):
     fil = len(array)
     nueva_matriz = [[0 for x in range(1)] for y in range(fil)]
@@ -130,33 +142,37 @@ def crear_matriz(array):
         nueva_matriz[i][0] = array[i]
     return  nueva_matriz
 
-q=30
-# Y = [[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7],[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7]]
+q=5
+#Y = [[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7],[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7]]
 csv_file = open('todo1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
 aux = []
 for row in csv_reader:
-    num, = row
-    aux.append((float(row[0])))
+     num, = row
+     aux.append((float(row[0])))
 Y=crear_matriz(aux)
 # print('Matriz Y original')
-# imprimir_matriz(Y)
-# print('Nueva Matriz Y ')
-# imprimir_matriz(crear_matrix_y(Y,q))
-# print('Nueva Matriz X ')
-# imprimir_matriz(crear_matrix_x(Y,q))
-nueva_matrix_y = crear_matrix_y(Y,q)
-nueva_matrix_x = crear_matrix_x(Y,q)
-betas = b_arreglos(nueva_matrix_x,nueva_matrix_y)
-# imprimir_matriz(betas)
-x = [None]*30
-for i in range(30):
+imprimir_matriz(Y)
+print('Nueva Matriz Y ')
+imprimir_matriz(crear_matrix_y(Y,q))
+print('Nueva Matriz X ')
+imprimir_matriz(crear_matrix_x(Y,q))
+aux2=mult_y_x(crear_matrix_x(Y,q),crear_matrix_y(Y,q),q)
+aux=np.array(aux2)
+aux.shape=(q)
+print(aux)
+# nueva_matrix_y = crear_matrix_y(Y,q)
+# nueva_matrix_x = crear_matrix_x(Y,q)
+# betas = b_arreglos(nueva_matrix_x,nueva_matrix_y)
+# # imprimir_matriz(betas)
+x = [None]*q
+for i in range(q):
     x[i]=(i+1)
-A = np.squeeze(np.asarray(betas))
-# print(A)
-plt.plot(x,A)
+#A = np.squeeze(np.asarray(betas))
+# # print(A)
+plt.plot(x,aux)
 plt.xlabel('x')
 plt.ylabel('y')
-plt.title('Autocorrelacion Simple')
+plt.title('Autocorrelacion Parcial')
 plt.show()
