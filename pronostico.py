@@ -12,7 +12,21 @@ def imprimir_matriz(matriz):
         print()
     print()
 
+def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
+    p = len(matrixN)
+    n = len(matrixN[0])
+    n2 = len(matrixM)
+    q = len(matrixM[0])
+    if (n != n2):
+        print('Las matrices no son PxN NxQ por lo tanto, no se pueden multiplicar')
+    else:
+        result = [[0 for i in range(q)] for j in range(p)]
+        for i in range(p):
+            for j in range(q):
+                for k in range(n):
+                    result[i][j] = result[i][j] + matrixN[i][k] * matrixM[k][j]
 
+        return result
 
 def traspuesta_matriz(matriz):
     t = []
@@ -62,21 +76,6 @@ def kM(k, M):
             R[i][j] = k * M[i][j]
     return R
 
-def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
-    p = len(matrixN)
-    n = len(matrixN[0])
-    n2 = len(matrixM)
-    q = len(matrixM[0])
-    if (n != n2):
-        print('Las matrices no son PxN NxQ por lo tanto, no se pueden multiplicar')
-    else:
-        result = [[0 for i in range(q)] for j in range(p)]
-        for i in range(p):
-            for j in range(q):
-                for k in range(n):
-                    result[i][j] = result[i][j] + matrixN[i][k] * matrixM[k][j]
-
-        return result
 
 def inversa_matriz(M):
     n = len(M)
@@ -141,12 +140,6 @@ for row in csv_reader:
     num, = row
     aux.append((float(row[0])))
 Y=crear_matriz(aux)
-# print('Matriz Y original')
-# imprimir_matriz(Y)
-# print('Nueva Matriz Y ')
-# imprimir_matriz(crear_matrix_y(Y,q))
-# print('Nueva Matriz X ')
-# imprimir_matriz(crear_matrix_x(Y,q))
 nueva_matrix_y = crear_matrix_y(Y,q)
 nueva_matrix_x = crear_matrix_x(Y,q)
 betas = b_arreglos(nueva_matrix_x,nueva_matrix_y)
