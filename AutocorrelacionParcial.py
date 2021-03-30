@@ -132,7 +132,7 @@ def mult_y_x(matrizx,matrizy,q):
             vecaux[i][0] = matrizx[i][j]
         res=b_arreglos(vecaux,matrizy)
         vecq[j]=res
-    print(vecq)
+    #print(vecq)
     return vecq
 
 def crear_matriz(array):
@@ -142,7 +142,7 @@ def crear_matriz(array):
         nueva_matriz[i][0] = array[i]
     return  nueva_matriz
 
-q=30
+q=1824
 #Y = [[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7],[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7]]
 csv_file = open('todo1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
@@ -152,16 +152,17 @@ for row in csv_reader:
      num, = row
      aux.append((float(row[0])))
 Y=crear_matriz(aux)
-# print('Matriz Y original')
+print(len(Y))
+#print('Matriz Y original')
 imprimir_matriz(Y)
 print('Nueva Matriz Y ')
-imprimir_matriz(crear_matrix_y(Y,q))
+# imprimir_matriz(crear_matrix_y(Y,q))
 print('Nueva Matriz X ')
-imprimir_matriz(crear_matrix_x(Y,q))
+# imprimir_matriz(crear_matrix_x(Y,q))
 aux2=mult_y_x(crear_matrix_x(Y,q),crear_matrix_y(Y,q),q)
 aux=np.array(aux2)
 aux.shape=(q)
-print(aux)
+# print(aux)
 # nueva_matrix_y = crear_matrix_y(Y,q)
 # nueva_matrix_x = crear_matrix_x(Y,q)
 # betas = b_arreglos(nueva_matrix_x,nueva_matrix_y)
@@ -176,3 +177,17 @@ plt.xlabel('x')
 plt.ylabel('y')
 plt.title('Autocorrelacion Parcial')
 plt.show()
+
+
+tamanio90porcentaje=int(len(Y)*0.90)
+aux2=[None]*tamanio90porcentaje
+
+print('porce 90:',tamanio90porcentaje)
+for i in range (tamanio90porcentaje):
+    Y[i]=Y[i]
+print(aux2)
+
+constante=aux[27]
+
+
+
