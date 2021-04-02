@@ -2,29 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.integrate import odeint
 
-
-# def f(x,y):
-#     tasa_natalidad = 0.06
-#     tasa_mortalidad = 0.04
-#     tasa_pesca = 0.136
-#
-#     dxdt = tasa_natalidad * x - tasa_mortalidad * x - tasa_pesca * x
-#     return (dxdt)
-#
-#
-# poblacion_inicial = 15000
-#
-# t = np.linspace(1989, 2089, num=100)
-# y = odeint(f, poblacion_inicial,t)
-# print(y)
-
-# plt.plot(t,y)
-# plt.xlabel('x')
-# plt.ylabel('y')
-# plt.title('Poblacion de ballenas')
-# plt.show()
-
-
 def f2(x):
     tasa_natalidad = 0.06
     tasa_mortalidad = 0.04
@@ -49,6 +26,31 @@ plt.xlabel('x')
 plt.ylabel('y')
 plt.title('Poblacion de ballenas')
 plt.show()
+
+
+# def f(x,y):
+#     tasa_natalidad = 0.06
+#     tasa_mortalidad = 0.04
+#     tasa_pesca = 0.136
+#
+#     dxdt = tasa_natalidad * x - tasa_mortalidad * x - tasa_pesca * x
+#     return (dxdt)
+#
+#
+# poblacion_inicial = 15000
+#
+# t = np.linspace(1989, 2089, num=100)
+# y = odeint(f, poblacion_inicial,t)
+# print(y)
+
+# plt.plot(t,y)
+# plt.xlabel('x')
+# plt.ylabel('y')
+# plt.title('Poblacion de ballenas')
+# plt.show()
+
+
+
 
 
 
