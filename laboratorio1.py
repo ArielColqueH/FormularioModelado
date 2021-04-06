@@ -145,40 +145,51 @@ def crear_matriz(array):
     return  nueva_matriz
 
 q=1824
-csv_file = open('todo1.csv')
+csv_file = open('DatosPC.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
-aux = []
+x11 = []
+x22 = []
+x33 = []
+x44 = []
+x55 = []
+y11 = []
+y22 = []
+y33 = []
 for row in csv_reader:
-     num, = row
-     aux.append((float(row[0])))
-Y=crear_matriz(aux)#se crear la matriz con los datos originales
-aux2=mult_y_x(crear_matrix_x(Y,q),crear_matrix_y(Y,q),q)
-aux=np.array(aux2)
-aux.shape=(q)
-x = [None]*q
-for i in range(q):
-    x[i]=(i+1)
-arregloOriginal = np.squeeze(np.asarray(Y))
-Y_90=arregloOriginal[:1643]#se guardan las variables de 0-1643 que es el 90%
-Y_10=arregloOriginal[1644:]#se guardan las variables de 1643-final que es el 10%
-nuevoArreglo=[]
-for i in range (len(Y_90)):
-    nuevoArreglo.append(Y[i])
-# print(nuevoArreglo)
-rho, sigma = sm.regression.yule_walker(nuevoArreglo, order=1,method="adjusted") #se aplica la formula de yule-walker donde se nos devuelven Rho y el arreglo de sigmas
-print('rho',rho)
-arregloRestanteSecundario=[]
-last=Y_90[-1]#antes de empezar las iteraciones, se setea una variable inicial para que pueda recorrer el pronostico,en este caso, el ultimo elemento de nuestro arreglo del 90%
-print(last)
-for i in range (len(Y_10)):
-    cal=rho[0]*last#se aplica la formula para obtener la primera prediccion
-    arregloRestanteSecundario.append(cal)
-    last=cal#la ultima se vuelve la primera
-print(arregloRestanteSecundario)
-print(Y_10)
-x = np.arange(len(Y_10))
-plt.plot(x,Y_10,x,arregloRestanteSecundario)
-plt.show()#se muestra la grafica correspondiente
-print(len(Y_10))
+     x1,x2,x3,x4,x5,y1,y2,y3 = row
+     x11.append(float(x1))
+     x22.append(float(x2))
+     x33.append(float(x3))
+     x44.append(float(x4))
+     x55.append(float(x5))
+     y11.append(float(y1))
+     y22.append(float(y2))
+     y33.append(float(y3))
+xx11=crear_matriz(x11)#se crear la matriz con los datos originales
+xx22=crear_matriz(x22)
+xx33=crear_matriz(x22)
+xx44=crear_matriz(x22)
+xx55=crear_matriz(x22)
+arregloOriginalx1 = np.squeeze(np.asarray(xx11))
+arregloOriginalx2 = np.squeeze(np.asarray(xx22))
+arregloOriginalx3 = np.squeeze(np.asarray(xx33))
+arregloOriginalx4 = np.squeeze(np.asarray(xx44))
+arregloOriginalx5 = np.squeeze(np.asarray(xx55))
+
+rho1, sigma = sm.regression.yule_walker(arregloOriginalx1, order=1,method="adjusted") #se aplica la formula de yule-walker donde se nos devuelven Rho y el arreglo de sigmas
+print('rho1',rho1)
+
+rho2, sigma = sm.regression.yule_walker(arregloOriginalx2, order=1,method="adjusted") #se aplica la formula de yule-walker donde se nos devuelven Rho y el arreglo de sigmas
+print('rho2',rho2)
+
+def creary1(array1,array2,array3):
+    w, h = 3, 20;
+    Matrix = [[0 for x in range(w)] for y in range(h)]
+    for i in range(20):
+            Matrix[i][0]=array1[i]
+            Matrix[i][1]=array2[i]
+            Matrix[i][2]=array3[i]
+    return Matrix
+matrixY=creary1(arregloOriginalx3,arregloOriginalx4,arregloOriginalx5)
 

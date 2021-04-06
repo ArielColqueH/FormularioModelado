@@ -1,10 +1,10 @@
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-import statsmodels.api as sm
-from statsmodels.datasets.sunspots import load
+
 
 # -----matrices----
+
 def imprimir_matriz(matriz):
     p = len(matriz)
     q = len(matriz[0])
@@ -13,6 +13,7 @@ def imprimir_matriz(matriz):
             print(format(matriz[i][j], "<5"), end="")
         print()
     print()
+
 
 def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
     p = len(matrixN)
@@ -29,6 +30,7 @@ def multiplicacion_dos_matrices_n_m(matrixN, matrixM):
                     result[i][j] = result[i][j] + matrixN[i][k] * matrixM[k][j]
 
         return result
+
 
 def traspuesta_matriz(matriz):
     t = []
@@ -92,93 +94,81 @@ def inversa_matriz(M):
     return invM
 
 
-
 def b_arreglos(matriz, matrizy):
     matriz1 = multiplicacion_dos_matrices_n_m(traspuesta_matriz(matriz), matriz)
     matriz2 = multiplicacion_dos_matrices_n_m(matriz1, traspuesta_matriz(matriz))
     resmatriz = multiplicacion_dos_matrices_n_m(matriz2, matrizy)
-    #print(resmatriz)
-    # print('filas'+str(len(resmatriz[0])))
-    # print('columnas'+str(len(resmatriz)))
     return resmatriz
 
 
-
-def crear_matrix_y(matriz_original_y,q):
-    fil=len(matriz_original_y)
+def crear_matrix_y(matriz_original_y, q):
+    fil = len(matriz_original_y)
     # print(fi)
-    aux=np.array(matriz_original_y)
-    nueva_matriz_y=aux[q:fil,:]
+    aux = np.array(matriz_original_y)
+    nueva_matriz_y = aux[q:fil, :]
     return nueva_matriz_y
 
-def crear_matrix_x(matriz_original_y,q):
-    filOriginal=len(matriz_original_y)
-    fil=len(crear_matrix_y(matriz_original_y,q))
-    aux=np.array(matriz_original_y)
-    nueva_matriz_y=[[0 for x in range(q)] for y in range(fil)]
+
+def crear_matrix_x(matriz_original_y, q):
+    filOriginal = len(matriz_original_y)
+    fil = len(crear_matrix_y(matriz_original_y, q))
+    aux = np.array(matriz_original_y)
+    nueva_matriz_y = [[0 for x in range(q)] for y in range(fil)]
     for i in range(q):
-        index=i+1
-        aux_matriz_1=aux[0:filOriginal-index,:]
-        aux_matriz_2=aux_matriz_1[(q-index):filOriginal-index,:]
-        # print('matrix : column ',index)
-        # print(aux_matriz_2)
-        for j in range (fil):
+        index = i + 1
+        aux_matriz_1 = aux[0:filOriginal - index, :]
+        aux_matriz_2 = aux_matriz_1[(q - index):filOriginal - index, :]
+        for j in range(fil):
             nueva_matriz_y[j][i] = aux_matriz_2[j][0]
     return nueva_matriz_y
 
-def mult_y_x(matrizx,matrizy,q):
-    vecaux=[[0 for x in range(1)] for y in range(len(matrizx))]
-    vecq=[0]*q
+
+def mult_y_x(matrizx, matrizy, q):
+    vecaux = [[0 for x in range(1)] for y in range(len(matrizx))]
+    vecq = [0] * q
     for j in range(q):
         for i in range(len(matrizx)):
             vecaux[i][0] = matrizx[i][j]
-        res=b_arreglos(vecaux,matrizy)
-        vecq[j]=res
-    #print(vecq)
+        res = b_arreglos(vecaux, matrizy)
+        vecq[j] = res
+    # print(vecq)
     return vecq
+
 
 def crear_matriz(array):
     fil = len(array)
     nueva_matriz = [[0 for x in range(1)] for y in range(fil)]
     for i in range(fil):
         nueva_matriz[i][0] = array[i]
-    return  nueva_matriz
+    return nueva_matriz
 
-q=1824
+def modelo(array,a,b):
+    aux = array*a+b
+    return aux
+q = 500
+# Y = [[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7],[10],[-5],[8],[-1],[9],[6],[-5],[11],[18],[7]]
 csv_file = open('todo1.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
 aux = []
 for row in csv_reader:
-     num, = row
-     aux.append((float(row[0])))
-Y=crear_matriz(aux)#se crear la matriz con los datos originales
-aux2=mult_y_x(crear_matrix_x(Y,q),crear_matrix_y(Y,q),q)
-aux=np.array(aux2)
-aux.shape=(q)
-x = [None]*q
-for i in range(q):
-    x[i]=(i+1)
-arregloOriginal = np.squeeze(np.asarray(Y))
-Y_90=arregloOriginal[:1643]#se guardan las variables de 0-1643 que es el 90%
-Y_10=arregloOriginal[1644:]#se guardan las variables de 1643-final que es el 10%
-nuevoArreglo=[]
-for i in range (len(Y_90)):
-    nuevoArreglo.append(Y[i])
-# print(nuevoArreglo)
-rho, sigma = sm.regression.yule_walker(nuevoArreglo, order=1,method="adjusted") #se aplica la formula de yule-walker donde se nos devuelven Rho y el arreglo de sigmas
-print('rho',rho)
-arregloRestanteSecundario=[]
-last=Y_90[-1]#antes de empezar las iteraciones, se setea una variable inicial para que pueda recorrer el pronostico,en este caso, el ultimo elemento de nuestro arreglo del 90%
-print(last)
-for i in range (len(Y_10)):
-    cal=rho[0]*last#se aplica la formula para obtener la primera prediccion
-    arregloRestanteSecundario.append(cal)
-    last=cal#la ultima se vuelve la primera
-print(arregloRestanteSecundario)
-print(Y_10)
-x = np.arange(len(Y_10))
-plt.plot(x,Y_10,x,arregloRestanteSecundario)
-plt.show()#se muestra la grafica correspondiente
-print(len(Y_10))
+    num, = row
+    aux.append((float(row[0])))
+Y = crear_matriz(aux)
 
+t = crear_matrix_y(Y, 1)
+size = len(t)
+x = np.arange(size)
+casoA=modelo(t,0.1,0)
+casoB=modelo(t,-0.1,0)
+casoC=modelo(t,1,100)
+casoD=modelo(t,1,0)
+casoE=modelo(t,0,0)
+casoF=modelo(t,-1,0)
+casoG=modelo(t,1.5,0)
+casoH=modelo(t,-1.5,0)
+plt.plot(x,t,x,casoH)
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Caso')
+plt.show()
