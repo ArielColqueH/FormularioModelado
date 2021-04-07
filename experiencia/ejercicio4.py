@@ -13,7 +13,6 @@ sympy.Eq(y(t).diff(t), f)
 
 edo_sol = sympy.dsolve(y(t).diff(t) - f)
 
-
 ics = {y(0): tempinit}
 
 C_eq = sympy.Eq(edo_sol.lhs.subs(t, 0).subs(ics), edo_sol.rhs.subs(t, 0))
