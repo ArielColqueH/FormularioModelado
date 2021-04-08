@@ -15,7 +15,7 @@ def gamma_0 (a1,a2,a3):
 
 def gamma_1(a1,a2,a3):
     div = -a2+(a1/a3)
-    ig0 = a3/div -((1/a3)/div)
+    ig0 = a3/div - ((1/a3)/div)
     ig2 = a1/div - ((a2/a3)/div)
     veci = np.array([ig0,1,ig2])
     return veci
