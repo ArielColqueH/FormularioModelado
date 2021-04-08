@@ -1,8 +1,9 @@
 import csv
 import matplotlib.pyplot as plt
-import math
 import numpy as np
-from sklearn.metrics import mean_squared_error, r2_score
+import math
+import pandas as pd
+
 def array_media(arr):
     sum = 0
     for i in arr:
@@ -122,53 +123,28 @@ def formula_recta(arrx,arry):
         y.append(pendiente(arrx,arry)*i+(b(arrx,arry)))
     return y
 
-def formula_logaritmo(arrx,arry):
-    y=[]
-    for i in arrx:
-       y.append(lnpendiente(arrx,arry)*math.log(i)+(lnb(arrx,arry)))
-       # y.append(math.log(i))
-    return y
-
-csv_file = open('eje11.csv')
+csv_file = open('parte2ejercicio8.csv')
 csv_reader = csv.reader(csv_file, delimiter=',')
 next(csv_reader)
-anios = []
-dp = []
-inpe = []
-prpollo = []
-prcerdo = []
-prres = []
+cantidad = []
+precio = []
+publicidad = []
 for row in csv_reader:
-    aniosaux, dpaux, inpeaux, prpolloaux, prcerdoaux, prresaux, a = row
-    anios.append((float(aniosaux)))
-    dp.append((float(dpaux)))
-    inpe.append((float(inpeaux)))
-    prpollo.append((float(prpolloaux)))
-    prcerdo.append((float(prcerdoaux)))
-    prres.append((float(prresaux)))
+    auxcantidad, auxprecio, auxpublicidad,asdasd = row
+    cantidad.append((float(auxcantidad)))
+    precio.append((float(auxprecio)))
+    publicidad.append((float(auxpublicidad)))
 
 
-varaux = prres
-print('Media: ', array_media(varaux))
-print('Mediana:', array_mediana(varaux))
-print('Desviacion estandar:', array_desviacion(varaux))
-print('Sesgo:', array_sesgo(varaux))
-print('Kurtosis:', array_kurtosis(varaux))
-print('Jarque bera:', array_jaque_bera(varaux))
-beta = b(varaux,dp)
-pend = pendiente(varaux,dp)
-lnbeta = lnb(varaux,dp)
-lnpend = lnpendiente(varaux,dp)
+beta = b(precio,cantidad)
+pend = pendiente(precio,cantidad)
 print('beta : ',beta)
 print('pendiente = ',pend)
 print('y = ',pend,' * x + ',beta)
-print('lnbeta : ',lnbeta)
-print('lnpendiente = ',lnpend)
-print('y = ',lnpend,' * x + ',lnbeta)
-plt.scatter(varaux, dp, marker='o');
-plt.plot(varaux,formula_recta(varaux,dp),)
-plt.plot(varaux,formula_logaritmo(varaux,dp))
-plt.xlabel('años')
-plt.ylabel('demanda de pollo')
-plt.title('precio real del res por libra')
+
+plt.scatter(precio, cantidad, marker='o');
+plt.plot(precio,formula_recta(precio,cantidad),)
+plt.xlabel('precio')
+plt.ylabel('demanda')
+plt.title('precio vs demanda')
 plt.show()
